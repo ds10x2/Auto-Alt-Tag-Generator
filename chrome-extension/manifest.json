@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Auto-Alt-Tag-Genenerator",
+  "version": "0.1",
+  "description": "시각 장애인들을 위한 자동 한글 대체 텍스트 생성 확장 프로그램",
+  "permissions": ["activeTab", "scripting"],
+  "action": {},
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+B",
+        "mac": "Command+B"
+      }
+    }
+  }
+}
