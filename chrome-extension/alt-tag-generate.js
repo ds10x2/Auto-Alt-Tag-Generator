@@ -9,22 +9,59 @@ function isElementInViewport(el) {
   );
 }
 
+function isURL(src) {
+    return src.startsWith("http://") || src.startsWith("https://");
+}
+
+function isBase64(src) {
+    return src.startsWith("data:") && src.indexOf("base64,") !== -1;
+}
+
 {
-	API_URL = "http://127.0.0.1:5000/"
+	API_URL = "" //server Host 입력!
 	// 모든 img 태그 선택
 	const imgTags = document.querySelectorAll("img");
-	console.log(imgTags);
 	// img 태그를 반복하면서 alt 속성이 없는 경우 수정
 	imgTags.forEach((img) => {
 		isVisible = isElementInViewport(img);
-		const altText = img.getAttribute("alt");
+		const img_url = img.getAttribute("src");
 		if (isVisible) {
-			fetch(API_URL).then((response) => response.json())
-			.then((data) => {
-				new_alt = data['altText'];
-				img.setAttribute("alt", new_alt);
-				console.log(new_alt, "대체 텍스트 생성!");
-			})
+			if(isURL(img_url))
+			{
+				fetch(API_URL + "/urlImage", {
+				method: "POST",
+				headers : {
+					"Content-Type" : "application/json",
+				},
+				body: JSON.stringify({
+					url: img_url
+				})
+				})
+				.then((response) => response.json())
+				.then((data) => {
+					new_alt = data['altText'];
+					img.setAttribute("alt", new_alt);
+					console.log(new_alt, "대체 텍스트 생성!");
+				})
+			}
+			else if (isBase64(img_url))
+			{
+				fetch(API_URL + "/base64Image", {
+				method: "POST",
+				headers : {
+					"Content-Type" : "application/json",
+				},
+				body: JSON.stringify({
+					base64String : img_url.substring(23)
+				})
+				})
+				.then((response) => response.json())
+				.then((data) => {
+					new_alt = data['altText'];
+					img.setAttribute("alt", new_alt);
+					console.log(new_alt, " : 대체 텍스트 생성!");
+				})
+			}
 		}
 	});
 }
