@@ -4,13 +4,12 @@ function isElementInViewport(el) {
   var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
   var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
   var isPartial = (
-    rect.top < viewportHeight &&
-    rect.left < viewportWidth &&
     rect.bottom > 0 &&
-    rect.right > 0
+    rect.top < viewportHeight
   );
   return isPartial;
 }
+
 
 function isURL(src) {
     return src.startsWith("http://") || src.startsWith("https://");
