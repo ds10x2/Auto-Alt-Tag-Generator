@@ -1,12 +1,15 @@
 //현재 화면에 보이는 태그인지 확인하는 함수
 function isElementInViewport(el) {
   var rect = el.getBoundingClientRect();
-  return (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+  var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  var isPartial = (
+    rect.top < viewportHeight &&
+    rect.left < viewportWidth &&
+    rect.bottom > 0 &&
+    rect.right > 0
   );
+  return isPartial;
 }
 
 function isURL(src) {
@@ -18,7 +21,7 @@ function isBase64(src) {
 }
 
 {
-	API_URL = "" //server Host 입력!
+	API_URL = "http://www.waity.pe.kr:8081/image" //server Host 입력!
 	// 모든 img 태그 선택
 	const imgTags = document.querySelectorAll("img");
 	// img 태그를 반복하면서 alt 속성이 없는 경우 수정
@@ -39,10 +42,12 @@ function isBase64(src) {
 				})
 				.then((response) => response.json())
 				.then((data) => {
+					console.log(img)
 					new_alt = data['altText'];
 					img.setAttribute("alt", new_alt);
-					console.log(new_alt, "대체 텍스트 생성!");
+					console.log(new_alt, " : 대체 텍스트 생성!");
 				})
+				.catch(err =>console.log(err, "server error"))
 			}
 			else if (isBase64(img_url))
 			{
@@ -57,10 +62,12 @@ function isBase64(src) {
 				})
 				.then((response) => response.json())
 				.then((data) => {
+					console.log(img)
 					new_alt = data['altText'];
 					img.setAttribute("alt", new_alt);
 					console.log(new_alt, " : 대체 텍스트 생성!");
 				})
+				.catch(err =>console.log("server error"))
 			}
 		}
 	});
