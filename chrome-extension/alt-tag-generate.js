@@ -28,6 +28,7 @@ function isBase64(src) {
 		isVisible = isElementInViewport(img);
 		const img_url = img.getAttribute("src");
 		if (isVisible) {
+			console.log(img, '이미지에 대해 대체 텍스트 생성 요청!');
 			if(isURL(img_url))
 			{
 				fetch(API_URL + "/urlImage", {
@@ -41,7 +42,6 @@ function isBase64(src) {
 				})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(img)
 					new_alt = data['altText'];
 					img.setAttribute("alt", new_alt);
 					console.log(new_alt, " : 대체 텍스트 생성!");
@@ -61,7 +61,6 @@ function isBase64(src) {
 				})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(img)
 					new_alt = data['altText'];
 					img.setAttribute("alt", new_alt);
 					console.log(new_alt, " : 대체 텍스트 생성!");
