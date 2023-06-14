@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.imageMapper">
+    <insert id="createImage" parameterType="com.example.demo.dto.imageDTO">
+        INSERT INTO
+            images (id, content, alt_text, type)
+        VALUES(
+            #{id},
+            #{content},
+            #{altText},
+            #{type}
+        )
+        ON DUPLICATE KEY UPDATE alt_text = #{altText};
+    </insert>
+    <select id="readImageByContent" resultType="com.example.demo.dto.imageDTO">
+        SELECT
+            id, content, alt_text, type
+        FROM
+            images
+        WHERE
+            content = #{content};
+    </select>
+</mapper>
